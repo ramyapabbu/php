@@ -14,9 +14,9 @@
     $result = mysqli_query($connection, $query);
     $query = "DROP TABLE IF EXISTS city";
     $result = mysqli_query($connection, $query);
-    $query = "CREATE TABLE country (id INT(11),countryName VARCHAR(128), CONSTRAINT city_pk PRIMARY KEY (id))";
+    $query = "CREATE TABLE IF NOT EXISTS country (id INT(11),countryName VARCHAR(128), CONSTRAINT country_pk PRIMARY KEY (id))";
     $result = mysqli_query($connection, $query);
-    $query = "CREATE TABLE city (id INT(11), cityName VARCHAR(128), countryId int(11), invanare int(11), FOREIGN KEY(countryId) REFERENCES country(id),CONSTRAINT city_pk PRIMARY KEY (id))";
+    $query = "CREATE TABLE IF NOT EXISTS city (id INT(11), cityName VARCHAR(128), countryId int(11), invanare int(11), FOREIGN KEY(countryId) REFERENCES country(id),CONSTRAINT city_pk PRIMARY KEY (id))";
     $result = mysqli_query($connection, $query);
     
     $str = file_get_contents('stad.json');
@@ -25,8 +25,12 @@
     foreach ($json as $field => $value) {
         $id = $value['id'];
         $countryname=$value['countryname'];
-        $query = "INSERT INTO country (id, countryName) VALUES ($id, $countryname)";
-        $result = mysqli_query($connection, $query);
+        $query = "INSERT IGNORE INTO country (id, countryName) VALUES ('$id', '$countryname')";
+        if(mysqli_query($connection, $query)){
+             // Do nothing
+        } else{
+            echo "ERROR: Could not able to execute $query. " . mysqli_error($connection);
+        }
     }
     
      $str = file_get_contents('city.json');
@@ -37,8 +41,12 @@
         $stadname=$value['stadname'];
         $countryId = $value['countryid'];
         $population=$value['population'];
-        $query = "INSERT INTO city (id, cityName, countryId, invanare) VALUES ($id, $stadname, $countryId, $population)";
-        $result = mysqli_query($connection, $query);
+        $query = "INSERT IGNORE INTO city (id, cityName, countryId, invanare) VALUES ('$id', '$stadname', '$countryId', '$population')";
+        if(mysqli_query($connection, $query)){
+            // Do nothing
+        } else{
+            echo "ERROR: Could not able to execute $query. " . mysqli_error($connection);
+        }
     }
     
     $query = "SELECT * FROM country";

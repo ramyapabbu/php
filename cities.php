@@ -9,7 +9,6 @@
     
     $connection = mysqli_connect($host, $user, $pass, $db, $port)or die(mysql_error());
 
-
     $countryId = $_GET['countryid']; 
     $countryName = $_GET['countryname'];
     
