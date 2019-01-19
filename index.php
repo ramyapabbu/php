@@ -29,13 +29,13 @@
         $result = mysqli_query($connection, $query);
     }
     
-     $str = file_get_contents('stad.json');
-    $json = json_decode($str, true);
+     $str = file_get_contents('city.json');
+     $json = json_decode($str, true);
     
     foreach ($json as $field => $value) {
         $id = $value['id'];
         $stadname=$value['stadname'];
-        $countryId = $value['countryId'];
+        $countryId = $value['countryid'];
         $population=$value['population'];
         $query = "INSERT INTO city (id, cityName, countryId, invanare) VALUES ($id, $stadname, $countryId, $population)";
         $result = mysqli_query($connection, $query);

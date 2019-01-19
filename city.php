@@ -13,7 +13,6 @@
     $cityId = $_GET['cityid']; 
     $countryName = $_GET['countryname'];
     
-    //And now to perform a simple query to make sure it's working
     $query = "SELECT * FROM city where id=$cityId";
     $result = mysqli_query($connection, $query);
 
